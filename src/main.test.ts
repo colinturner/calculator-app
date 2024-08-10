@@ -96,7 +96,7 @@ describe("updateDisplay function", () => {
     expect(display.textContent).toBe("46");
   });
 
-  it("6: handle decimal numbers in addition", () => {
+  it("#6: handle decimal numbers in addition", () => {
     // Simulate some calculator input
     calculator.handleInput("1");
     calculator.handleInput("2");
@@ -115,7 +115,7 @@ describe("updateDisplay function", () => {
     expect(display.textContent).toBe("16.8");
   });
 
-  it("7: handle floating point precision errors in addition", () => {
+  it("#7: handle floating point precision errors in addition", () => {
     // Simulate some calculator input
     calculator.handleInput("1");
     calculator.handleInput("2");
@@ -132,5 +132,55 @@ describe("updateDisplay function", () => {
 
     // Check that the display is correctly updated
     expect(display.textContent).toBe("15.7");
+  });
+
+  it("#8: handle multiple addition operators", () => {
+    // Simulate some calculator input
+    calculator.handleInput("1");
+    calculator.handleInput("+");
+    calculator.handleInput("2");
+    calculator.handleInput("+");
+    calculator.handleInput("3");
+    calculator.handleInput("=");
+
+    // Update the display based on the calculator's state
+    updateDisplay(calculator);
+
+    // Check that the display is correctly updated
+    expect(display.textContent).toBe("6");
+  });
+
+  it("#9: handle multiple addition operators (with decimals)", () => {
+    // Simulate some calculator input
+    calculator.handleInput("1");
+    calculator.handleInput("+");
+    calculator.handleInput("2");
+    calculator.handleInput("+");
+    calculator.handleInput("3");
+    calculator.handleInput("+");
+    calculator.handleInput("4.5");
+    calculator.handleInput("+");
+    calculator.handleInput("6");
+    calculator.handleInput("+");
+    calculator.handleInput("7.8");
+    calculator.handleInput("=");
+
+    // Update the display based on the calculator's state
+    updateDisplay(calculator);
+
+    // Check that the display is correctly updated
+    expect(display.textContent).toBe("24.3");
+  });
+
+  it("#10: handle a no-operator input", () => {
+    // Simulate some calculator input
+    calculator.handleInput("5");
+    calculator.handleInput("=");
+
+    // Update the display based on the calculator's state
+    updateDisplay(calculator);
+
+    // Check that the display is correctly updated
+    expect(display.textContent).toBe("5");
   });
 });
