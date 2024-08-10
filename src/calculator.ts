@@ -7,6 +7,12 @@ class Calculator {
   }
 
   public handleInput(input: string) {
+    if (input === "=") {
+      const result = this.calculateResult(this.totalInput);
+      this.totalInput = [result];
+      return;
+    }
+
     if (input === "AC") {
       this.totalInput = [];
       return;
@@ -100,14 +106,6 @@ class Calculator {
   public getDisplayValue() {
     if (!this.totalInput.length) {
       return "0";
-    }
-
-    const lastInput = this.totalInput[this.totalInput.length - 1];
-
-    if (lastInput === "=") {
-      const result = this.calculateResult(this.totalInput);
-      this.totalInput = [];
-      return result;
     }
 
     let value = "";
