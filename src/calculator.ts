@@ -1,7 +1,21 @@
 class Calculator {
   private totalInput: string[] = [];
 
+  // Readonly getter for totalInput
+  public getTotalInput(): ReadonlyArray<string> {
+    return this.totalInput;
+  }
+
   public handleInput(input: string) {
+    if (input === "AC") {
+      this.totalInput = [];
+      return;
+    }
+
+    if (input === "CE") {
+      this.totalInput.pop();
+      return;
+    }
     this.totalInput.push(input);
   }
 
@@ -84,12 +98,11 @@ class Calculator {
   }
 
   public getDisplayValue() {
-    const lastInput = this.totalInput[this.totalInput.length - 1];
-
-    if (lastInput === "AC") {
-      this.totalInput = [];
+    if (!this.totalInput.length) {
       return "0";
     }
+
+    const lastInput = this.totalInput[this.totalInput.length - 1];
 
     if (lastInput === "=") {
       const result = this.calculateResult(this.totalInput);

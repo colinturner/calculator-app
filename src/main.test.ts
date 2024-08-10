@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import Calculator from "./calculator";
-import { updateDisplay } from "./main"; // Assuming updateDisplay is exported
+import { updateDisplay, updateClearButton } from "./main"; // Assuming updateDisplay is exported
 
 // Read the index.html file and load it into the DOM
 beforeEach(() => {
@@ -193,6 +193,56 @@ describe("updateDisplay function", () => {
     calculator.handleInput("AC");
 
     // Update the display based on the calculator's state
+    updateDisplay(calculator);
+
+    // Check that the display is correctly updated
+    expect(display.textContent).toBe("0");
+  });
+
+  it("#12: alternate AC/CE button", () => {
+    const clearButton = document.querySelector("#clearButton") as HTMLElement;
+    // Simulate some calculator input
+    calculator.handleInput("1");
+    calculator.handleInput("+");
+    calculator.handleInput("2");
+
+    updateClearButton(calculator);
+
+    // Check that the display is correctly updated
+    expect(clearButton.textContent).toBe("CE");
+  });
+
+  it("#13: CE button acts as a backspace key", () => {
+    const clearButton = document.querySelector("#clearButton") as HTMLElement;
+    // Simulate some calculator input
+    calculator.handleInput("1");
+    calculator.handleInput("+");
+    calculator.handleInput("2");
+
+    updateClearButton(calculator);
+    calculator.handleInput("CE");
+    updateDisplay(calculator);
+
+    // Check that the display is correctly updated
+    expect(display.textContent).toBe("1 + ");
+  });
+  it("#14: display 0 after hitting CE button all the way back", () => {
+    const clearButton = document.querySelector("#clearButton") as HTMLElement;
+    // Simulate some calculator input
+    calculator.handleInput("1");
+    calculator.handleInput("+");
+    calculator.handleInput("2");
+
+    updateClearButton(calculator);
+
+    // Hit backspace ("CE") three times
+    calculator.handleInput("CE");
+    updateDisplay(calculator);
+
+    calculator.handleInput("CE");
+    updateDisplay(calculator);
+
+    calculator.handleInput("CE");
     updateDisplay(calculator);
 
     // Check that the display is correctly updated
