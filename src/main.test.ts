@@ -52,7 +52,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("3");
       });
 
-      it("#3: compute multi-digit number (preceding operator) addition", () => {
+      it("#3: compute multi−digit number (preceding operator) addition", () => {
         // Simulate some calculator input
         calculator.handleInput("1");
         calculator.handleInput("2");
@@ -67,7 +67,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("15");
       });
 
-      it("#4: compute multi-digit number (following operator) addition", () => {
+      it("#4: compute multi−digit number (following operator) addition", () => {
         // Simulate some calculator input
         calculator.handleInput("1");
         calculator.handleInput("+");
@@ -82,7 +82,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("24");
       });
 
-      it("#5: compute multi-digit number (both preceding and following the operator) addition", () => {
+      it("#5: compute multi−digit number (both preceding and following the operator) addition", () => {
         // Simulate some calculator input
         calculator.handleInput("1");
         calculator.handleInput("2");
@@ -160,11 +160,15 @@ describe("Calculator Tests", () => {
         calculator.handleInput("+");
         calculator.handleInput("3");
         calculator.handleInput("+");
-        calculator.handleInput("4.5");
+        calculator.handleInput("4");
+        calculator.handleInput(".");
+        calculator.handleInput("5");
         calculator.handleInput("+");
         calculator.handleInput("6");
         calculator.handleInput("+");
-        calculator.handleInput("7.8");
+        calculator.handleInput("7");
+        calculator.handleInput(".");
+        calculator.handleInput("8");
         calculator.handleInput("=");
 
         // Update the display based on the calculator's state
@@ -179,7 +183,7 @@ describe("Calculator Tests", () => {
       it("#1: simple subtraction with single digits", () => {
         // Simulate some calculator input
         calculator.handleInput("1");
-        calculator.handleInput("-");
+        calculator.handleInput("−");
         calculator.handleInput("2");
         calculator.handleInput("=");
 
@@ -192,10 +196,12 @@ describe("Calculator Tests", () => {
       it("#2: chain subtraction", () => {
         // Simulate some calculator input
         calculator.handleInput("10");
-        calculator.handleInput("-");
+        calculator.handleInput("−");
         calculator.handleInput("2");
-        calculator.handleInput("-");
-        calculator.handleInput("3.4");
+        calculator.handleInput("−");
+        calculator.handleInput("3");
+        calculator.handleInput(".");
+        calculator.handleInput("4");
         calculator.handleInput("=");
 
         // Update the display based on the calculator's state
@@ -206,13 +212,94 @@ describe("Calculator Tests", () => {
       });
     });
 
+    describe("Multiplication", () => {
+      it("#1: simple multiplication", () => {
+        // Simulate some calculator input
+        calculator.handleInput("6");
+        calculator.handleInput("×");
+        calculator.handleInput("3");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("18");
+      });
+
+      it("#2: decimal multiplication", () => {
+        // Simulate some calculator input
+        calculator.handleInput("6");
+        calculator.handleInput(".");
+        calculator.handleInput("2");
+        calculator.handleInput("1");
+        calculator.handleInput("×");
+        calculator.handleInput("3");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("18.63");
+      });
+    });
+
+    describe("Division", () => {
+      it("#1: simple division", () => {
+        // Simulate some calculator input
+        calculator.handleInput("6");
+        calculator.handleInput("÷");
+        calculator.handleInput("3");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("2");
+      });
+
+      it("#2: decimal division", () => {
+        // Simulate some calculator input
+        calculator.handleInput("6");
+        calculator.handleInput(".");
+        calculator.handleInput("2");
+        calculator.handleInput("1");
+        calculator.handleInput("÷");
+        calculator.handleInput("3");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("2.07");
+      });
+
+      it("#3: division with non−terminating decimal result that truncates at 11 decimal places", () => {
+        // Simulate some calculator input
+        calculator.handleInput("1");
+        calculator.handleInput("3");
+        calculator.handleInput("÷");
+        calculator.handleInput("7");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("1.85714285714");
+      });
+    });
+
     describe("Combined operator types", () => {
       it("#1: addition and subtraction", () => {
         // Simulate some calculator input
         calculator.handleInput("1");
         calculator.handleInput("+");
         calculator.handleInput("2");
-        calculator.handleInput("-");
+        calculator.handleInput("−");
         calculator.handleInput("5");
         calculator.handleInput("=");
 
@@ -222,10 +309,28 @@ describe("Calculator Tests", () => {
         // Check that the display is correctly updated
         expect(display.textContent).toBe("-2");
       });
+
+      it("#1: multiplication and division", () => {
+        // Simulate some calculator input
+        calculator.handleInput("3");
+        calculator.handleInput("÷");
+        calculator.handleInput("1");
+        calculator.handleInput(".");
+        calculator.handleInput("4");
+        calculator.handleInput("×");
+        calculator.handleInput("5");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("10.71428571429");
+      });
     });
 
     describe("Miscellaneous", () => {
-      it("#1: handle a no-operator input", () => {
+      it("#1: handle a no−operator input", () => {
         // Simulate some calculator input
         calculator.handleInput("5");
         calculator.handleInput("=");
