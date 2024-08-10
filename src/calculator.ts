@@ -26,13 +26,13 @@ class Calculator {
   }
 
   private inputRequiresSpaceBefore(val: string) {
-    return ["√", "(", "%", "π", "÷", "e", "×", "−", "+"].includes(val)
+    return ["√", "(", "%", "π", "÷", "e", "×", "-", "+"].includes(val)
       ? " "
       : "";
   }
 
   private inputRequiresSpaceAfter(val: string) {
-    return ["√", ")", "%", "π", "÷", "e", "×", "−", "+"].includes(val)
+    return ["√", ")", "%", "π", "÷", "e", "×", "-", "+"].includes(val)
       ? " "
       : "";
   }
@@ -50,7 +50,7 @@ class Calculator {
       const currentVal = totalInput.shift() as string; // *[1] Grab the first value from totalInput
 
       // Skip down if it's not an operator
-      if (["÷", "×", "−", "+"].includes(currentVal)) {
+      if (["÷", "×", "-", "+"].includes(currentVal)) {
         // Indicates that the first operator has been encountered
         if (operand1 === null) {
           operand1 = Number(operand2);
@@ -98,6 +98,8 @@ class Calculator {
     switch (operator) {
       case "+":
         return operand1 + operand2;
+      case "-":
+        return operand1 - operand2;
       default:
         return NaN;
     }

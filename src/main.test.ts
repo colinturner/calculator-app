@@ -24,170 +24,223 @@ describe("Calculator Tests", () => {
   });
 
   describe("Arithmetic", () => {
-    it("#1: display simple addition with single digits", () => {
-      // Simulate some calculator input
-      calculator.handleInput("1");
-      calculator.handleInput("+");
-      calculator.handleInput("2");
+    describe("Addition", () => {
+      it("#1: display simple addition with single digits", () => {
+        // Simulate some calculator input
+        calculator.handleInput("1");
+        calculator.handleInput("+");
+        calculator.handleInput("2");
 
-      // Update the display based on the calculator's state
-      updateDisplay(calculator);
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
 
-      // Check that the display is correctly updated
-      expect(display.textContent).toBe("1 + 2");
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("1 + 2");
+      });
+
+      it("#2: compute simple addition with single digits", () => {
+        // Simulate some calculator input
+        calculator.handleInput("1");
+        calculator.handleInput("+");
+        calculator.handleInput("2");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("3");
+      });
+
+      it("#3: compute multi-digit number (preceding operator) addition", () => {
+        // Simulate some calculator input
+        calculator.handleInput("1");
+        calculator.handleInput("2");
+        calculator.handleInput("+");
+        calculator.handleInput("3");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("15");
+      });
+
+      it("#4: compute multi-digit number (following operator) addition", () => {
+        // Simulate some calculator input
+        calculator.handleInput("1");
+        calculator.handleInput("+");
+        calculator.handleInput("2");
+        calculator.handleInput("3");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("24");
+      });
+
+      it("#5: compute multi-digit number (both preceding and following the operator) addition", () => {
+        // Simulate some calculator input
+        calculator.handleInput("1");
+        calculator.handleInput("2");
+        calculator.handleInput("+");
+        calculator.handleInput("3");
+        calculator.handleInput("4");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("46");
+      });
+
+      it("#6: handle decimal numbers in addition", () => {
+        // Simulate some calculator input
+        calculator.handleInput("1");
+        calculator.handleInput("2");
+        calculator.handleInput(".");
+        calculator.handleInput("3");
+        calculator.handleInput("+");
+        calculator.handleInput("4");
+        calculator.handleInput(".");
+        calculator.handleInput("5");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("16.8");
+      });
+
+      it("#7: handle floating point precision errors in addition", () => {
+        // Simulate some calculator input
+        calculator.handleInput("1");
+        calculator.handleInput("2");
+        calculator.handleInput(".");
+        calculator.handleInput("3");
+        calculator.handleInput("+");
+        calculator.handleInput("3");
+        calculator.handleInput(".");
+        calculator.handleInput("4");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("15.7");
+      });
+
+      it("#8: handle multiple addition operators", () => {
+        // Simulate some calculator input
+        calculator.handleInput("1");
+        calculator.handleInput("+");
+        calculator.handleInput("2");
+        calculator.handleInput("+");
+        calculator.handleInput("3");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("6");
+      });
+
+      it("#9: handle multiple addition operators (with decimals)", () => {
+        // Simulate some calculator input
+        calculator.handleInput("1");
+        calculator.handleInput("+");
+        calculator.handleInput("2");
+        calculator.handleInput("+");
+        calculator.handleInput("3");
+        calculator.handleInput("+");
+        calculator.handleInput("4.5");
+        calculator.handleInput("+");
+        calculator.handleInput("6");
+        calculator.handleInput("+");
+        calculator.handleInput("7.8");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("24.3");
+      });
     });
 
-    it("#2: compute simple addition with single digits", () => {
-      // Simulate some calculator input
-      calculator.handleInput("1");
-      calculator.handleInput("+");
-      calculator.handleInput("2");
-      calculator.handleInput("=");
+    describe("Subtraction", () => {
+      it("#1: simple subtraction with single digits", () => {
+        // Simulate some calculator input
+        calculator.handleInput("1");
+        calculator.handleInput("-");
+        calculator.handleInput("2");
+        calculator.handleInput("=");
 
-      // Update the display based on the calculator's state
-      updateDisplay(calculator);
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
 
-      // Check that the display is correctly updated
-      expect(display.textContent).toBe("3");
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("-1");
+      });
+      it("#2: chain subtraction", () => {
+        // Simulate some calculator input
+        calculator.handleInput("10");
+        calculator.handleInput("-");
+        calculator.handleInput("2");
+        calculator.handleInput("-");
+        calculator.handleInput("3.4");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("4.6");
+      });
     });
 
-    it("#3: compute multi-digit number (preceding operator) addition", () => {
-      // Simulate some calculator input
-      calculator.handleInput("1");
-      calculator.handleInput("2");
-      calculator.handleInput("+");
-      calculator.handleInput("3");
-      calculator.handleInput("=");
+    describe("Combined operator types", () => {
+      it("#1: addition and subtraction", () => {
+        // Simulate some calculator input
+        calculator.handleInput("1");
+        calculator.handleInput("+");
+        calculator.handleInput("2");
+        calculator.handleInput("-");
+        calculator.handleInput("5");
+        calculator.handleInput("=");
 
-      // Update the display based on the calculator's state
-      updateDisplay(calculator);
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
 
-      // Check that the display is correctly updated
-      expect(display.textContent).toBe("15");
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("-2");
+      });
     });
 
-    it("#4: compute multi-digit number (following operator) addition", () => {
-      // Simulate some calculator input
-      calculator.handleInput("1");
-      calculator.handleInput("+");
-      calculator.handleInput("2");
-      calculator.handleInput("3");
-      calculator.handleInput("=");
+    describe("Miscellaneous", () => {
+      it("#1: handle a no-operator input", () => {
+        // Simulate some calculator input
+        calculator.handleInput("5");
+        calculator.handleInput("=");
 
-      // Update the display based on the calculator's state
-      updateDisplay(calculator);
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
 
-      // Check that the display is correctly updated
-      expect(display.textContent).toBe("24");
-    });
-
-    it("#5: compute multi-digit number (both preceding and following the operator) addition", () => {
-      // Simulate some calculator input
-      calculator.handleInput("1");
-      calculator.handleInput("2");
-      calculator.handleInput("+");
-      calculator.handleInput("3");
-      calculator.handleInput("4");
-      calculator.handleInput("=");
-
-      // Update the display based on the calculator's state
-      updateDisplay(calculator);
-
-      // Check that the display is correctly updated
-      expect(display.textContent).toBe("46");
-    });
-
-    it("#6: handle decimal numbers in addition", () => {
-      // Simulate some calculator input
-      calculator.handleInput("1");
-      calculator.handleInput("2");
-      calculator.handleInput(".");
-      calculator.handleInput("3");
-      calculator.handleInput("+");
-      calculator.handleInput("4");
-      calculator.handleInput(".");
-      calculator.handleInput("5");
-      calculator.handleInput("=");
-
-      // Update the display based on the calculator's state
-      updateDisplay(calculator);
-
-      // Check that the display is correctly updated
-      expect(display.textContent).toBe("16.8");
-    });
-
-    it("#7: handle floating point precision errors in addition", () => {
-      // Simulate some calculator input
-      calculator.handleInput("1");
-      calculator.handleInput("2");
-      calculator.handleInput(".");
-      calculator.handleInput("3");
-      calculator.handleInput("+");
-      calculator.handleInput("3");
-      calculator.handleInput(".");
-      calculator.handleInput("4");
-      calculator.handleInput("=");
-
-      // Update the display based on the calculator's state
-      updateDisplay(calculator);
-
-      // Check that the display is correctly updated
-      expect(display.textContent).toBe("15.7");
-    });
-
-    it("#8: handle multiple addition operators", () => {
-      // Simulate some calculator input
-      calculator.handleInput("1");
-      calculator.handleInput("+");
-      calculator.handleInput("2");
-      calculator.handleInput("+");
-      calculator.handleInput("3");
-      calculator.handleInput("=");
-
-      // Update the display based on the calculator's state
-      updateDisplay(calculator);
-
-      // Check that the display is correctly updated
-      expect(display.textContent).toBe("6");
-    });
-
-    it("#9: handle multiple addition operators (with decimals)", () => {
-      // Simulate some calculator input
-      calculator.handleInput("1");
-      calculator.handleInput("+");
-      calculator.handleInput("2");
-      calculator.handleInput("+");
-      calculator.handleInput("3");
-      calculator.handleInput("+");
-      calculator.handleInput("4.5");
-      calculator.handleInput("+");
-      calculator.handleInput("6");
-      calculator.handleInput("+");
-      calculator.handleInput("7.8");
-      calculator.handleInput("=");
-
-      // Update the display based on the calculator's state
-      updateDisplay(calculator);
-
-      // Check that the display is correctly updated
-      expect(display.textContent).toBe("24.3");
-    });
-
-    it("#10: handle a no-operator input", () => {
-      // Simulate some calculator input
-      calculator.handleInput("5");
-      calculator.handleInput("=");
-
-      // Update the display based on the calculator's state
-      updateDisplay(calculator);
-
-      // Check that the display is correctly updated
-      expect(display.textContent).toBe("5");
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("5");
+      });
     });
   });
 
   describe("AC/CE buttons", () => {
-    it("#11: handle AC button", () => {
+    it("#1: handle AC button", () => {
       // Simulate some calculator input
       calculator.handleInput("1");
       calculator.handleInput("+");
@@ -202,7 +255,7 @@ describe("Calculator Tests", () => {
       expect(display.textContent).toBe("0");
     });
 
-    it("#12: alternate AC/CE button", () => {
+    it("#2: alternate AC/CE button", () => {
       const clearButton = document.querySelector("#clearButton") as HTMLElement;
       // Simulate some calculator input
       calculator.handleInput("1");
@@ -215,7 +268,7 @@ describe("Calculator Tests", () => {
       expect(clearButton.textContent).toBe("CE");
     });
 
-    it("#13: CE button acts as a backspace key", () => {
+    it("#3: CE button acts as a backspace key", () => {
       const clearButton = document.querySelector("#clearButton") as HTMLElement;
       // Simulate some calculator input
       calculator.handleInput("1");
@@ -229,7 +282,7 @@ describe("Calculator Tests", () => {
       // Check that the display is correctly updated
       expect(display.textContent).toBe("1 + ");
     });
-    it("#14: display 0 after hitting CE button all the way back", () => {
+    it("#4: display 0 after hitting CE button all the way back", () => {
       const clearButton = document.querySelector("#clearButton") as HTMLElement;
       // Simulate some calculator input
       calculator.handleInput("1");
