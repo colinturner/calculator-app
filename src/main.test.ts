@@ -23,7 +23,7 @@ describe("updateDisplay function", () => {
     display = document.querySelector("#display") as HTMLElement;
   });
 
-  it("should show the correct display value: #1", () => {
+  it("#1: display simple addition with single digits", () => {
     // Simulate some calculator input
     calculator.handleInput("1");
     calculator.handleInput("+");
@@ -36,7 +36,7 @@ describe("updateDisplay function", () => {
     expect(display.textContent).toBe("1 + 2");
   });
 
-  it("should show the correct display value: #2", () => {
+  it("#2: compute simple addition with single digits", () => {
     // Simulate some calculator input
     calculator.handleInput("1");
     calculator.handleInput("+");
@@ -50,7 +50,7 @@ describe("updateDisplay function", () => {
     expect(display.textContent).toBe("3");
   });
 
-  it("should show the correct display value: #3", () => {
+  it("#3: compute multi-digit number (preceding operator) addition", () => {
     // Simulate some calculator input
     calculator.handleInput("1");
     calculator.handleInput("2");
@@ -63,5 +63,36 @@ describe("updateDisplay function", () => {
 
     // Check that the display is correctly updated
     expect(display.textContent).toBe("15");
+  });
+
+  it("#4: compute multi-digit number (following operator) addition", () => {
+    // Simulate some calculator input
+    calculator.handleInput("1");
+    calculator.handleInput("+");
+    calculator.handleInput("2");
+    calculator.handleInput("3");
+    calculator.handleInput("=");
+
+    // Update the display based on the calculator's state
+    updateDisplay(calculator);
+
+    // Check that the display is correctly updated
+    expect(display.textContent).toBe("24");
+  });
+
+  it("#5: compute multi-digit number (both preceding and following the operator) addition", () => {
+    // Simulate some calculator input
+    calculator.handleInput("1");
+    calculator.handleInput("2");
+    calculator.handleInput("+");
+    calculator.handleInput("3");
+    calculator.handleInput("4");
+    calculator.handleInput("=");
+
+    // Update the display based on the calculator's state
+    updateDisplay(calculator);
+
+    // Check that the display is correctly updated
+    expect(display.textContent).toBe("46");
   });
 });

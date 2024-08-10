@@ -18,14 +18,36 @@ class Calculator {
   }
 
   private calculateResult(totalInput: string[]) {
-    const firstOperand = Number(totalInput.shift());
-    const operator = totalInput.shift();
-    const secondOperand = Number(totalInput.shift());
+    let firstOperand = "";
+    let operator = "";
+    let secondOperand = "";
+
+    while (totalInput.length > 0) {
+      const currentVal = totalInput.shift() as string;
+
+      if (["÷", "×", "−", "+"].includes(currentVal)) {
+        operator = currentVal;
+        break;
+      } else {
+        firstOperand += currentVal;
+      }
+    }
+
+    while (totalInput.length > 0) {
+      const currentVal = totalInput.shift();
+
+      if (currentVal === "=") {
+        break;
+      }
+
+      secondOperand += currentVal;
+    }
+
     switch (operator) {
       case "+":
-        return String(firstOperand + secondOperand);
+        return String(Number(firstOperand) + Number(secondOperand));
       default:
-        return "123a";
+        return "Something went wrong";
     }
   }
 
