@@ -183,4 +183,19 @@ describe("updateDisplay function", () => {
     // Check that the display is correctly updated
     expect(display.textContent).toBe("5");
   });
+
+  it("#11: handle AC button", () => {
+    // Simulate some calculator input
+    calculator.handleInput("1");
+    calculator.handleInput("+");
+    calculator.handleInput("2");
+    calculator.handleInput("=");
+    calculator.handleInput("AC");
+
+    // Update the display based on the calculator's state
+    updateDisplay(calculator);
+
+    // Check that the display is correctly updated
+    expect(display.textContent).toBe("0");
+  });
 });

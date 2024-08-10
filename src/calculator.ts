@@ -84,7 +84,14 @@ class Calculator {
   }
 
   public getDisplayValue() {
-    if (this.totalInput[this.totalInput.length - 1] === "=") {
+    const lastInput = this.totalInput[this.totalInput.length - 1];
+
+    if (lastInput === "AC") {
+      this.totalInput = [];
+      return "0";
+    }
+
+    if (lastInput === "=") {
       const result = this.calculateResult(this.totalInput);
       this.totalInput = [];
       return result;
