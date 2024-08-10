@@ -18,9 +18,9 @@ class Calculator {
   }
 
   private calculateResult(totalInput: string[]) {
-    let firstOperand = "";
+    let firstOperand: string | number = "";
     let operator = "";
-    let secondOperand = "";
+    let secondOperand: string | number = "";
 
     while (totalInput.length > 0) {
       const currentVal = totalInput.shift() as string;
@@ -43,19 +43,29 @@ class Calculator {
       secondOperand += currentVal;
     }
 
+    let result: string | number;
+    firstOperand = Number(firstOperand);
+    secondOperand = Number(secondOperand);
+
     switch (operator) {
       case "+":
-        return String(Number(firstOperand) + Number(secondOperand));
+        result = firstOperand + secondOperand;
+        break;
       default:
         return "Something went wrong";
     }
+
+    const FLOATING_POINT_CORRECTION = 1000000000;
+
+    return String(
+      Math.round(result * FLOATING_POINT_CORRECTION) / FLOATING_POINT_CORRECTION
+    );
   }
 
   public getDisplayValue() {
     if (this.totalInput[this.totalInput.length - 1] === "=") {
       const result = this.calculateResult(this.totalInput);
       this.totalInput = [];
-      console.log("result!!!", result);
       return result;
     }
 
@@ -68,7 +78,6 @@ class Calculator {
           )}${val}${this.inputRequiresSpaceAfter(val)}`
         ))
     );
-    console.log("value!!!", value);
     return value;
   }
 }
