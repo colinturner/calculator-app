@@ -410,4 +410,86 @@ describe("Calculator Tests", () => {
       expect(display.textContent).toBe("0");
     });
   });
+
+  describe("User input validation", () => {
+    it("#1: prevent two operators being input in immediate succession", () => {
+      // Simulate some calculator input
+      calculator.handleInput("1");
+      calculator.handleInput("+");
+      calculator.handleInput("+");
+
+      // Update the display based on the calculator's state
+      updateDisplay(calculator);
+
+      // Check that the display is correctly updated
+      expect(display.textContent).toBe("1 + ");
+    });
+
+    it("#2: prevent two operators being input in immediate succession", () => {
+      // Simulate some calculator input
+      calculator.handleInput("1");
+      calculator.handleInput("+");
+      calculator.handleInput("−");
+
+      // Update the display based on the calculator's state
+      updateDisplay(calculator);
+
+      // Check that the display is correctly updated
+      expect(display.textContent).toBe("1 + ");
+    });
+
+    it("#3: prevent two operators being input in immediate succession", () => {
+      // Simulate some calculator input
+      calculator.handleInput("1");
+      calculator.handleInput("+");
+      calculator.handleInput("÷");
+
+      // Update the display based on the calculator's state
+      updateDisplay(calculator);
+
+      // Check that the display is correctly updated
+      expect(display.textContent).toBe("1 + ");
+    });
+
+    it("#4: prevent two operators being input in immediate succession", () => {
+      // Simulate some calculator input
+      calculator.handleInput("1");
+      calculator.handleInput("+");
+      calculator.handleInput("×");
+
+      // Update the display based on the calculator's state
+      updateDisplay(calculator);
+
+      // Check that the display is correctly updated
+      expect(display.textContent).toBe("1 + ");
+    });
+
+    it("#5: allow dot input following operator input", () => {
+      // Simulate some calculator input
+      calculator.handleInput("1");
+      calculator.handleInput("+");
+      calculator.handleInput(".");
+      calculator.handleInput("2");
+
+      // Update the display based on the calculator's state
+      updateDisplay(calculator);
+
+      // Check that the display is correctly updated
+      expect(display.textContent).toBe("1 + .2");
+    });
+
+    it("#6: skip operator input following dot input", () => {
+      // Simulate some calculator input
+      calculator.handleInput("1");
+      calculator.handleInput(".");
+      calculator.handleInput("+");
+      calculator.handleInput("2");
+
+      // Update the display based on the calculator's state
+      updateDisplay(calculator);
+
+      // Check that the display is correctly updated
+      expect(display.textContent).toBe("1.2");
+    });
+  });
 });

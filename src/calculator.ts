@@ -22,6 +22,18 @@ class Calculator {
       this.totalInput.pop();
       return;
     }
+
+    const previousInput = this.totalInput[this.totalInput.length - 1];
+    const operators = ["+", "−", "×", "÷"];
+
+    if (operators.includes(input) && operators.includes(previousInput)) {
+      return;
+    }
+
+    if (operators.includes(input) && previousInput === ".") {
+      return;
+    }
+
     this.totalInput.push(input);
   }
 
