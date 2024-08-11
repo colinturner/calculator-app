@@ -6,7 +6,26 @@ class Calculator {
     return this.totalInput;
   }
 
+  private invalidInput(input: string) {
+    const previousInput = this.totalInput[this.totalInput.length - 1];
+    const operators = ["+", "−", "×", "÷"];
+
+    if (operators.includes(input) && operators.includes(previousInput)) {
+      return true;
+    }
+
+    if (operators.includes(input) && previousInput === ".") {
+      return true;
+    }
+
+    return false;
+  }
+
   public handleInput(input: string) {
+    if (this.invalidInput(input)) {
+      return;
+    }
+
     if (input === "=") {
       const result = this.calculateResult(this.totalInput);
       this.totalInput = [result];
@@ -20,17 +39,6 @@ class Calculator {
 
     if (input === "CE") {
       this.totalInput.pop();
-      return;
-    }
-
-    const previousInput = this.totalInput[this.totalInput.length - 1];
-    const operators = ["+", "−", "×", "÷"];
-
-    if (operators.includes(input) && operators.includes(previousInput)) {
-      return;
-    }
-
-    if (operators.includes(input) && previousInput === ".") {
       return;
     }
 
