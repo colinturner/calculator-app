@@ -58,12 +58,13 @@ class Calculator {
   }
 
   private calculateResult(totalInput: string[]): string {
-    /***
-     * We handle the calculation in a series of passes.
-     * Let's imagine that we begin with this totalInput:
+    /*
+     * We handle the calculation in a series of passes over totalInput.
+     * Focusing on just the last 3 passes, let's imagine that
+     * we begin with this input heading into the first of the three passes:
      * ["4", "+", "3", "÷", "1", ".", "5", "−", "7"]
      *
-     * Pass 1: Aggregate inputs into complete numbers separated by operators
+     * Pass 1: Aggregate numbers and operators
      * --> ["4", "+", "3", "÷", "1.5", "−", "7"]
      *
      * Pass 2: Evaluate multiplication and division
@@ -73,21 +74,56 @@ class Calculator {
      * --> "-1"
      *
      * Celebrate!
-     * ***/
+     */
 
-    // Pass 1: Normalize input into a structured array that follows the pattern number-operator-number
-    const pass1 = this.aggregateNumbersAndOperators([...totalInput]);
-    console.log("Pass 1:", pass1);
+    // Pass 1: Eliminate parentheses through recursion
+    const pass1 = this.handleParentheses([...totalInput]);
 
-    // Pass 2: Handle multiplication and division
-    const pass2 = this.evaluateMultiplicationAndDivision(pass1);
-    console.log("Pass 2:", pass2);
+    // Pass 2: Normalize input into a structured array that follows the pattern number-operator-number
+    const pass2 = this.aggregateNumbersAndOperators(pass1);
 
-    // Pass 3: Handle addition and subtraction
-    const pass3 = this.evaluateAdditionAndSubtraction(pass2);
-    console.log("Pass 3:", pass3);
+    // Pass 3: Handle multiplication and division
+    const pass3 = this.evaluateMultiplicationAndDivision(pass2);
 
-    return pass3;
+    // Pass 4: Handle addition and subtraction
+    const pass4 = this.evaluateAdditionAndSubtraction(pass3);
+
+    return pass4;
+  }
+
+  private handleParentheses(totalInput: string[]): string[] {
+    const result: string[] = [];
+
+    while (totalInput.length > 0) {
+      const currentVal = totalInput.shift() as string;
+
+      if (currentVal === "(") {
+        // Start collecting the expression inside the parentheses
+        const innerExpression: string[] = [];
+        let depth = 1;
+
+        while (totalInput.length > 0) {
+          const nextVal = totalInput.shift() as string;
+          if (nextVal === "(") {
+            depth++;
+          } else if (nextVal === ")") {
+            depth--;
+            if (depth === 0) {
+              break; // End of the current parentheses scope
+            }
+          }
+          innerExpression.push(nextVal);
+        }
+
+        // Recursively calculate the result for the inner expression
+        const innerResult = this.calculateResult(innerExpression);
+        result.push(innerResult); // Add the evaluated result to the main array
+      } else {
+        result.push(currentVal); // Push anything that's not a parenthesis
+      }
+    }
+
+    return result;
   }
 
   private aggregateNumbersAndOperators(totalInput: string[]): string[] {

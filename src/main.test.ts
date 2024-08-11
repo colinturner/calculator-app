@@ -354,6 +354,78 @@ describe("Calculator Tests", () => {
       });
     });
 
+    describe("Parentheses", () => {
+      it("#1: handles parentheses", () => {
+        // Simulate some calculator input
+        calculator.handleInput("(");
+        calculator.handleInput("3");
+        calculator.handleInput("+");
+        calculator.handleInput("2");
+        calculator.handleInput(")");
+        calculator.handleInput("×");
+        calculator.handleInput("4");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("20");
+      });
+
+      it("#2: handles nested parentheses", () => {
+        // Simulate some calculator input
+        calculator.handleInput("(");
+        calculator.handleInput("(");
+        calculator.handleInput("3");
+        calculator.handleInput("+");
+        calculator.handleInput("(");
+        calculator.handleInput("8");
+        calculator.handleInput("÷");
+        calculator.handleInput("2");
+        calculator.handleInput("0");
+        calculator.handleInput(".");
+        calculator.handleInput("7");
+        calculator.handleInput(")");
+        calculator.handleInput(")");
+        calculator.handleInput("×");
+        calculator.handleInput("5");
+        calculator.handleInput(".");
+        calculator.handleInput("1");
+        calculator.handleInput(")");
+        calculator.handleInput("−");
+        calculator.handleInput("1");
+        calculator.handleInput("2");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("5.27101449275");
+      });
+
+      it("#1: handles parentheses (expression not beginning with parentheses)", () => {
+        // Simulate some calculator input
+        calculator.handleInput("5");
+        calculator.handleInput("+");
+        calculator.handleInput("(");
+        calculator.handleInput("3");
+        calculator.handleInput("+");
+        calculator.handleInput("2");
+        calculator.handleInput(")");
+        calculator.handleInput("×");
+        calculator.handleInput("4");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("25");
+      });
+    });
+
     describe("Miscellaneous", () => {
       it("#1: handle a no−operator input", () => {
         // Simulate some calculator input
