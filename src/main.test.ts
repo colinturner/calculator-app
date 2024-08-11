@@ -235,13 +235,16 @@ describe("Calculator Tests", () => {
         calculator.handleInput("1");
         calculator.handleInput("×");
         calculator.handleInput("3");
+        calculator.handleInput("6");
+        calculator.handleInput(".");
+        calculator.handleInput("8");
         calculator.handleInput("=");
 
         // Update the display based on the calculator's state
         updateDisplay(calculator);
 
         // Check that the display is correctly updated
-        expect(display.textContent).toBe("18.63");
+        expect(display.textContent).toBe("228.528");
       });
     });
 
@@ -310,7 +313,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("-2");
       });
 
-      it("#1: multiplication and division", () => {
+      it("#2: multiplication and division", () => {
         // Simulate some calculator input
         calculator.handleInput("3");
         calculator.handleInput("÷");
@@ -326,6 +329,28 @@ describe("Calculator Tests", () => {
 
         // Check that the display is correctly updated
         expect(display.textContent).toBe("10.71428571429");
+      });
+
+      it("#3: respects the order of operations between addition, subtraction, multiplication, and division", () => {
+        // Simulate some calculator input
+        calculator.handleInput("3");
+        calculator.handleInput("+");
+        calculator.handleInput("2");
+        calculator.handleInput("÷");
+        calculator.handleInput("5");
+        calculator.handleInput(".");
+        calculator.handleInput("7");
+        calculator.handleInput("−");
+        calculator.handleInput("2");
+        calculator.handleInput("×");
+        calculator.handleInput("8");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("-12.64912280702");
       });
     });
 

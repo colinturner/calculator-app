@@ -57,56 +57,106 @@ class Calculator {
       : "";
   }
 
-  private calculateResult(totalInput: string[]) {
-    // Holds the running result
-    let operand1: number | null = null;
-    // Accumulates digits and dots for the next operand
-    let operand2: string | number = "";
-    let operator = "";
+  private calculateResult(totalInput: string[]): string {
+    /***
+     * We handle the calculation in a series of passes.
+     * Let's imagine that we begin with this totalInput:
+     * ["4", "+", "3", "÷", "1", ".", "5", "−", "7"]
+     *
+     * Pass 1: Aggregate inputs into complete numbers separated by operators
+     * --> ["4", "+", "3", "÷", "1.5", "−", "7"]
+     *
+     * Pass 2: Evaluate multiplication and division
+     * --> ["4", "+", "2", "−", "7"]
+     *
+     * Pass 3: Evaluate addition and subtraction
+     * --> "-1"
+     *
+     * Celebrate!
+     * ***/
 
-    const FLOATING_POINT_CORRECTION = 100000000000;
+    // Pass 1: Normalize input into a structured array that follows the pattern number-operator-number
+    const pass1 = this.aggregateNumbersAndOperators([...totalInput]);
+    console.log("Pass 1:", pass1);
+
+    // Pass 2: Handle multiplication and division
+    const pass2 = this.evaluateMultiplicationAndDivision(pass1);
+    console.log("Pass 2:", pass2);
+
+    // Pass 3: Handle addition and subtraction
+    const pass3 = this.evaluateAdditionAndSubtraction(pass2);
+    console.log("Pass 3:", pass3);
+
+    return pass3;
+  }
+
+  private aggregateNumbersAndOperators(totalInput: string[]): string[] {
+    const result: string[] = [];
+    let currentNumber = "";
 
     while (totalInput.length > 0) {
-      const currentVal = totalInput.shift() as string; // *[1] Grab the first value from totalInput
+      const currentVal = totalInput.shift() as string;
 
-      // Skip down if it's not an operator
-      if (["÷", "×", "−", "+"].includes(currentVal)) {
-        // Indicates that the first operator has been encountered
-        if (operand1 === null) {
-          operand1 = Number(operand2);
-        } else {
-          // Our args here are:
-          // operand1: the accumulated result until now
-          // operand2: the new number we want to meld in to the result
-          // operator: the previously-stored operator
-          operand1 = this.performOperation(
-            operand1,
-            Number(operand2),
-            operator
-          );
+      if (["+", "−", "×", "÷"].includes(currentVal)) {
+        if (currentNumber !== "") {
+          result.push(currentNumber); // Push the complete number
+          currentNumber = ""; // Reset for the next number
         }
-
-        // Set the new operator for the next run of performOperation()
-        operator = currentVal;
-        operand2 = ""; // Reset operand2 to begin accumulating digits (and possibly a dot) for the next operand
-      } else if (currentVal === "=") {
-        break;
+        result.push(currentVal); // Push the operator
       } else {
-        operand2 += currentVal; // *[1] Accumulate the string value into operand2
+        // Accumulate digits and decimal points into a complete number
+        currentNumber += currentVal;
       }
     }
 
-    // Handle a no-operator case, such as "5 =" input. In that case, operand1 would never have been un-nulled.
-    if (operand1 === null) {
-      operand1 = Number(operand2);
-    } else {
-      // One final operation after exiting the while-loop
-      operand1 = this.performOperation(operand1, Number(operand2), operator);
+    // Push the final number, if any
+    if (currentNumber !== "") {
+      result.push(currentNumber);
     }
 
+    return result;
+  }
+
+  private evaluateMultiplicationAndDivision(
+    aggregatedInput: string[]
+  ): string[] {
+    const result: string[] = [];
+    let currentNumber = Number(aggregatedInput.shift() as string);
+
+    while (aggregatedInput.length > 0) {
+      const operator = aggregatedInput.shift() as string;
+      const nextNumber = Number(aggregatedInput.shift() as string);
+
+      if (["×", "÷"].includes(operator)) {
+        currentNumber = this.performOperation(
+          currentNumber,
+          nextNumber,
+          operator
+        );
+      } else {
+        result.push(String(currentNumber)); // Push the result of the previous operation
+        result.push(operator); // Push the addition/subtraction operator
+        currentNumber = nextNumber; // Update current number
+      }
+    }
+
+    result.push(String(currentNumber)); // Push the final result
+    return result;
+  }
+
+  private evaluateAdditionAndSubtraction(input: string[]): string {
+    let result = Number(input.shift() as string);
+
+    while (input.length > 0) {
+      const operator = input.shift() as string;
+      const nextNumber = Number(input.shift() as string);
+
+      result = this.performOperation(result, nextNumber, operator);
+    }
+
+    const FLOATING_POINT_CORRECTION = 100000000000;
     return String(
-      Math.round(operand1 * FLOATING_POINT_CORRECTION) /
-        FLOATING_POINT_CORRECTION
+      Math.round(result * FLOATING_POINT_CORRECTION) / FLOATING_POINT_CORRECTION
     );
   }
 
