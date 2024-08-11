@@ -426,6 +426,75 @@ describe("Calculator Tests", () => {
       });
     });
 
+    describe("Special symbols", () => {
+      it("#1: handles the %-symbol", () => {
+        // Simulate some calculator input
+        calculator.handleInput("6");
+        calculator.handleInput("%");
+        calculator.handleInput("×");
+        calculator.handleInput("5");
+        calculator.handleInput("0");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("3");
+      });
+
+      it("#2: handles the π-symbol", () => {
+        // Simulate some calculator input
+        calculator.handleInput("6");
+        calculator.handleInput("×");
+        calculator.handleInput("π");
+        calculator.handleInput("+");
+        calculator.handleInput("1");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("19.84955592154");
+      });
+
+      it("#3: handles the e-symbol", () => {
+        // Simulate some calculator input
+        calculator.handleInput("4");
+        calculator.handleInput("×");
+        calculator.handleInput("e");
+        calculator.handleInput("+");
+        calculator.handleInput("2");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("12.87312731384");
+      });
+
+      it("#3: handles multiple specials", () => {
+        // Simulate some calculator input
+        calculator.handleInput("4");
+        calculator.handleInput("×");
+        calculator.handleInput("e");
+        calculator.handleInput("+");
+        calculator.handleInput("2");
+        calculator.handleInput("%");
+        calculator.handleInput("÷");
+        calculator.handleInput("π");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("10.87949351156");
+      });
+    });
+
     describe("Miscellaneous", () => {
       it("#1: handle a no−operator input", () => {
         // Simulate some calculator input

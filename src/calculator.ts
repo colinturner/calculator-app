@@ -83,16 +83,19 @@ class Calculator {
     // Pass 1: Eliminate parentheses through recursion
     const pass1 = this.handleParentheses([...totalInput]);
 
-    // Pass 2: Normalize input into a structured array that follows the pattern number-operator-number
-    const pass2 = this.aggregateNumbersAndOperators(pass1);
+    // Pass 2: Substitute special symbols for numbers and operators
+    const pass2 = this.substituteSpecialSymbols(pass1);
 
-    // Pass 3: Handle multiplication and division
-    const pass3 = this.evaluateMultiplicationAndDivision(pass2);
+    // Pass 3: Normalize input into a structured array that follows the pattern number-operator-number
+    const pass3 = this.aggregateNumbersAndOperators(pass2);
 
-    // Pass 4: Handle addition and subtraction
-    const pass4 = this.evaluateAdditionAndSubtraction(pass3);
+    // Pass 4: Handle multiplication and division
+    const pass4 = this.evaluateMultiplicationAndDivision(pass3);
 
-    return pass4;
+    // Pass 5: Handle addition and subtraction
+    const pass5 = this.evaluateAdditionAndSubtraction(pass4);
+
+    return pass5;
   }
 
   private handleParentheses(totalInput: string[]): string[] {
@@ -152,6 +155,45 @@ class Calculator {
     // Push the final number, if any
     if (currentNumber !== "") {
       result.push(currentNumber);
+    }
+
+    return result;
+  }
+
+  private substituteSpecialSymbols(input: string[]): string[] {
+    /**
+     * This method takes an input such as:
+     * [
+      '4', '×', 'e',
+      '+', '2', '%',
+      '÷', 'π'
+    ]
+     * and transforms it into:
+     * [
+        '4', '×', '2.718281828459045',
+        '+', '2', '÷', '100',
+        '÷', '3.141592653589793'
+        ]
+     */
+    const result: string[] = [];
+
+    for (let i = 0; i < input.length; i++) {
+      const currentVal = input[i];
+
+      if (currentVal === "%") {
+        // Substitute "%" with "÷" and "100"
+        result.push("÷");
+        result.push("100");
+      } else if (currentVal === "π") {
+        // Substitute "π" with the value of Math.PI
+        result.push(String(Math.PI));
+      } else if (currentVal === "e") {
+        // Substitute "e" with the value of Math.E
+        result.push(String(Math.E));
+      } else {
+        // Just push the current value if it's not one of the special symbols
+        result.push(currentVal);
+      }
     }
 
     return result;
