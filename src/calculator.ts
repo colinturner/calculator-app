@@ -179,15 +179,25 @@ class Calculator {
 
     for (let i = 0; i < input.length; i++) {
       const currentVal = input[i];
+      const previousVal = result[result.length - 1];
+      const operators = ["+", "−", "×", "÷"];
 
       if (currentVal === "%") {
         // Substitute "%" with "÷" and "100"
         result.push("÷");
         result.push("100");
       } else if (currentVal === "π") {
+        // Account for implicit multiplication, e.g. user entering "4π" instead of "4 × π"
+        if (!operators.includes(previousVal)) {
+          result.push("×");
+        }
         // Substitute "π" with the value of Math.PI
         result.push(String(Math.PI));
       } else if (currentVal === "e") {
+        // Account for implicit multiplication, e.g. user entering "4e" instead of "4 × e"
+        if (!operators.includes(previousVal)) {
+          result.push("×");
+        }
         // Substitute "e" with the value of Math.E
         result.push(String(Math.E));
       } else {

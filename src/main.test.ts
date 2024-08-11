@@ -475,7 +475,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("12.87312731384");
       });
 
-      it("#3: handles multiple specials", () => {
+      it("#4: handles multiple special symbols at once", () => {
         // Simulate some calculator input
         calculator.handleInput("4");
         calculator.handleInput("×");
@@ -492,6 +492,32 @@ describe("Calculator Tests", () => {
 
         // Check that the display is correctly updated
         expect(display.textContent).toBe("10.87949351156");
+      });
+
+      it("#5: correctly infers implicit multiplication with e-symbol", () => {
+        // Simulate some calculator input
+        calculator.handleInput("4");
+        calculator.handleInput("e");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("10.87312731384");
+      });
+
+      it("#6: correctly infers implicit multiplication with π-symbol", () => {
+        // Simulate some calculator input
+        calculator.handleInput("4");
+        calculator.handleInput("π");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("12.56637061436");
       });
     });
 
