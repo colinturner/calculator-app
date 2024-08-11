@@ -588,5 +588,19 @@ describe("Calculator Tests", () => {
       // Check that the display is correctly updated
       expect(display.textContent).toBe("1.2");
     });
+
+    it("#6: prevent computation/display of incoherent result", () => {
+      // Simulate some calculator input
+      calculator.handleInput("(");
+      calculator.handleInput("3");
+      calculator.handleInput("×");
+      calculator.handleInput("=");
+
+      // Update the display based on the calculator's state
+      updateDisplay(calculator);
+
+      // Check that the display is correctly updated
+      expect(display.textContent).toBe("(3 × ");
+    });
   });
 });

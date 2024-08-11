@@ -28,6 +28,9 @@ class Calculator {
 
     if (input === "=") {
       const result = this.calculateResult(this.totalInput);
+      if (result === "NaN") {
+        return;
+      }
       this.totalInput = [result];
       return;
     }
@@ -45,8 +48,9 @@ class Calculator {
     this.totalInput.push(input);
   }
 
-  private inputRequiresSpaceBefore(val: string) {
-    return ["√", "(", "%", "π", "÷", "e", "×", "−", "+"].includes(val)
+  private inputRequiresSpaceBefore(val: string, index: number) {
+    return ["√", "(", "%", "π", "÷", "e", "×", "−", "+"].includes(val) &&
+      index !== 0
       ? " "
       : "";
   }
@@ -222,10 +226,11 @@ class Calculator {
 
     let value = "";
     this.totalInput.forEach(
-      (val) =>
+      (val, index) =>
         (value = value.concat(
           `${this.inputRequiresSpaceBefore(
-            val
+            val,
+            index
           )}${val}${this.inputRequiresSpaceAfter(val)}`
         ))
     );
