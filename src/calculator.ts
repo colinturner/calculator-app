@@ -100,13 +100,11 @@ class Calculator {
   }
 
   private inputRequiresSpaceBefore(val: string, index: number) {
-    return ["√", "%", "÷", "×", "−", "+"].includes(val) && index !== 0
-      ? " "
-      : "";
+    return ["÷", "×", "−", "+"].includes(val) && index !== 0 ? " " : "";
   }
 
   private inputRequiresSpaceAfter(val: string) {
-    return ["√", "%", "÷", "×", "−", "+"].includes(val) ? " " : "";
+    return ["÷", "×", "−", "+"].includes(val) ? " " : "";
   }
 
   private calculateResult(totalInput: string[]): string {

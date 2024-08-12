@@ -950,7 +950,7 @@ describe("Calculator Tests", () => {
       updateDisplay(calculator);
 
       // Check that the display is correctly updated
-      expect(display.textContent).toBe("3 % ");
+      expect(display.textContent).toBe("3%");
     });
 
     it("#7: ensure an arithmetic or unary operator is used after '='", () => {
