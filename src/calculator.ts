@@ -198,7 +198,7 @@ class Calculator {
       const currentVal = input[i];
       const previousVal = result[result.length - 1];
       const operators = ["+", "−", "×", "÷"];
-      const specialSymbols = ["e", "π"];
+      const specialSymbols = ["e", "π", "√"];
 
       if (currentVal === "%") {
         // Substitute "%" with "÷" and "100"

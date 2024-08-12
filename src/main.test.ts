@@ -566,7 +566,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("8");
       });
 
-      it("#2: handles square root with implicit multiplication (and decimals)", () => {
+      it("#3: handles square root with implicit multiplication (and decimals)", () => {
         calculator.handleInput("2");
         calculator.handleInput(".");
         calculator.handleInput("3");
@@ -579,7 +579,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("9.22870521796");
       });
 
-      it("#3: handles square root next to an operator", () => {
+      it("#4: handles square root next to an operator", () => {
         calculator.handleInput("4");
         calculator.handleInput("+");
         calculator.handleInput("√");
@@ -589,7 +589,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("9");
       });
 
-      it("#3: handles square root with parentheses", () => {
+      it("#5: handles square root with parentheses", () => {
         calculator.handleInput("4");
         calculator.handleInput("+");
         calculator.handleInput("√");
@@ -605,6 +605,17 @@ describe("Calculator Tests", () => {
         calculator.handleInput("=");
         updateDisplay(calculator);
         expect(display.textContent).toBe("9");
+      });
+
+      it("#6: handles square root with 'e' and 'π'", () => {
+        calculator.handleInput("4");
+        calculator.handleInput("√");
+        calculator.handleInput("e");
+        calculator.handleInput("√");
+        calculator.handleInput("π");
+        calculator.handleInput("=");
+        updateDisplay(calculator);
+        expect(display.textContent).toBe("11.68912946129");
       });
     });
 
