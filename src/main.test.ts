@@ -437,7 +437,7 @@ describe("Calculator Tests", () => {
 
           // Expect the display to have two ghosted closing parentheses
           expect(display.innerHTML).toBe(
-            '(7 +  (8<span class="ghost-parenthesis">)</span><span class="ghost-parenthesis">)</span>'
+            '(7 + (8<span class="ghost-parenthesis">)</span><span class="ghost-parenthesis">)</span>'
           );
 
           calculator.handleInput(")");
@@ -445,12 +445,12 @@ describe("Calculator Tests", () => {
 
           // Expect the display to have one ghosted closing parenthesis
           expect(display.innerHTML).toBe(
-            '(7 +  (8) <span class="ghost-parenthesis">)</span>'
+            '(7 + (8)<span class="ghost-parenthesis">)</span>'
           );
 
           calculator.handleInput(")");
           updateDisplay(calculator);
-          expect(display.innerHTML).toBe("(7 +  (8) ) ");
+          expect(display.innerHTML).toBe("(7 + (8))");
         });
 
         it("should not show any ghosted parentheses if all are closed", () => {
@@ -465,7 +465,7 @@ describe("Calculator Tests", () => {
           updateDisplay(calculator);
 
           // Expect the display to contain no ghosted closing parentheses
-          expect(display.innerHTML).toBe("(7 +  (8) ) ");
+          expect(display.innerHTML).toBe("(7 + (8))");
         });
       });
     });
