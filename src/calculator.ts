@@ -6,10 +6,11 @@ class Calculator {
     return this.totalInput;
   }
 
-  private invalidInput(input: string) {
-    const previousInput = this.totalInput[this.totalInput.length - 1];
-    const operators = ["+", "−", "×", "÷"];
-
+  private invalidInput(
+    input: string,
+    previousInput: string,
+    operators: string[]
+  ) {
     // Can't have two operators in a row as inputs. E.g. "+" followed by another "+".
     if (operators.includes(input) && operators.includes(previousInput)) {
       return true;
@@ -29,7 +30,10 @@ class Calculator {
   }
 
   public handleInput(input: string) {
-    if (this.invalidInput(input)) {
+    const previousInput = this.totalInput[this.totalInput.length - 1];
+    const operators = ["+", "−", "×", "÷"];
+
+    if (this.invalidInput(input, previousInput, operators)) {
       return;
     }
 
@@ -53,16 +57,19 @@ class Calculator {
     }
 
     if (input === "Rnd") {
-      const DECIMAL_PLACES = 6;
-      const randomValue = String(
-        Math.floor(Math.random() * Math.pow(10, DECIMAL_PLACES)) /
-          Math.pow(10, DECIMAL_PLACES)
-      );
-      // Push each character (digit or dot) individually to allow the CE (backspace)
-      // button to work as expected
-      for (const character of randomValue) {
-        this.totalInput.push(character);
+      if (this.totalInput.length === 0 || operators.includes(previousInput)) {
+        const DECIMAL_PLACES = 6;
+        const randomValue = String(
+          Math.floor(Math.random() * Math.pow(10, DECIMAL_PLACES)) /
+            Math.pow(10, DECIMAL_PLACES)
+        );
+        // Push each character (digit or dot) individually to allow the CE (backspace)
+        // button to work as expected
+        for (const character of randomValue) {
+          this.totalInput.push(character);
+        }
       }
+      console.log(this.totalInput);
       return;
     }
 

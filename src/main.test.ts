@@ -739,6 +739,22 @@ describe("Calculator Tests", () => {
       // Verify that the value is now missing the last two characters of randomValue
       expect(afterSecondCE).toBe(randomValue.slice(0, -2));
     });
+
+    it("#3: do not allow a second random number to be generated without an operator preceding it", () => {
+      // Generate first random number
+      calculator.handleInput("Rnd");
+
+      // Capture it
+      const firstRandomNumber = calculator.getTotalInput().join("");
+
+      // Try to generate a second random number. Not so fast, friend!
+      calculator.handleInput("Rnd");
+
+      updateDisplay(calculator);
+
+      // Check that the second random number was not added
+      expect(display.textContent).toBe(firstRandomNumber);
+    });
   });
 
   describe("User input validation", () => {
