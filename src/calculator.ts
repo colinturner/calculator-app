@@ -21,8 +21,9 @@ class Calculator {
       return true;
     }
 
-    // Can't have a %-symbol without an operator following it
-    if (previousInput === "%" && !operators.includes(input)) {
+    // Can't have a %-symbol without an operator following it,
+    // unless the %-symbol is the last input before "="
+    if (previousInput === "%" && ![...operators, "="].includes(input)) {
       return true;
     }
 
@@ -69,7 +70,6 @@ class Calculator {
           this.totalInput.push(character);
         }
       }
-      console.log(this.totalInput);
       return;
     }
 
@@ -120,19 +120,22 @@ class Calculator {
     const pass3 = this.aggregateNumbersAndOperators(pass2);
     console.log("pass3", pass3);
 
-    // Pass 4: Handle square roots
-    const pass4 = this.evaluateSquareRoots(pass3);
-    console.log("pass4", pass4);
+    // Pass 4: Handle percentage symbols
+    const pass4 = this.evaluatePercentages(pass3);
 
-    // Pass 5: Handle multiplication and division
-    const pass5 = this.evaluateMultiplicationAndDivision(pass4);
+    // Pass 5: Handle square roots
+    const pass5 = this.evaluateSquareRoots(pass4);
     console.log("pass5", pass5);
 
-    // Pass 6: Handle addition and subtraction
-    const pass6 = this.evaluateAdditionAndSubtraction(pass5);
+    // Pass 6: Handle multiplication and division
+    const pass6 = this.evaluateMultiplicationAndDivision(pass5);
     console.log("pass6", pass6);
 
-    return pass6;
+    // Pass 7: Handle addition and subtraction
+    const pass7 = this.evaluateAdditionAndSubtraction(pass6);
+    console.log("pass7", pass7);
+
+    return pass7;
   }
 
   private handleParentheses(totalInput: string[]): string[] {
@@ -170,47 +173,18 @@ class Calculator {
     return result;
   }
 
-  private aggregateNumbersAndOperators(totalInput: string[]): string[] {
-    const result: string[] = [];
-    let currentNumber = "";
-
-    while (totalInput.length > 0) {
-      const currentVal = totalInput.shift() as string;
-
-      if (["+", "−", "×", "÷", "√"].includes(currentVal)) {
-        if (currentNumber !== "") {
-          result.push(currentNumber); // Push the complete number
-          currentNumber = ""; // Reset for the next number
-        }
-        result.push(currentVal); // Push the operator
-      } else {
-        // Accumulate digits and decimal points into a complete number
-        currentNumber += currentVal;
-      }
-    }
-
-    // Push the final number, if any
-    if (currentNumber !== "") {
-      result.push(currentNumber);
-    }
-
-    return result;
-  }
-
   private substituteSpecialSymbols(input: string[]): string[] {
     /**
-     * This method eliminates the symbols 'e', 'π', and '%'.
+     * This method eliminates the symbols 'e' and 'π'.
      * It takes an input such as:
      * [
       '4', '×', 'e',
-      '+', '2', '%',
-      '÷', 'π'
+      '+', '2', '÷', 'π'
     ]
      * and transforms it into:
      * [
         '4', '×', '2.718281828459045',
-        '+', '2', '÷', '100',
-        '÷', '3.141592653589793'
+        '+', '2', '÷', '3.141592653589793'
         ]
      */
     const result: string[] = [];
@@ -221,11 +195,7 @@ class Calculator {
       const operators = ["+", "−", "×", "÷"];
       const specialSymbols = ["e", "π", "√"];
 
-      if (currentVal === "%") {
-        // Substitute "%" with "÷" and "100"
-        result.push("÷");
-        result.push("100");
-      } else if (currentVal === "π") {
+      if (currentVal === "π") {
         // Account for implicit multiplication, e.g. user entering "4π" instead of "4 × π"
         if (
           previousVal &&
@@ -249,6 +219,53 @@ class Calculator {
         result.push(String(Math.E));
       } else {
         // Just push the current value if it's not one of the special symbols
+        result.push(currentVal);
+      }
+    }
+
+    return result;
+  }
+
+  private aggregateNumbersAndOperators(totalInput: string[]): string[] {
+    const result: string[] = [];
+    let currentNumber = "";
+
+    while (totalInput.length > 0) {
+      const currentVal = totalInput.shift() as string;
+
+      if (["+", "−", "×", "÷", "√", "%"].includes(currentVal)) {
+        if (currentNumber !== "") {
+          result.push(currentNumber); // Push the complete number
+          currentNumber = ""; // Reset for the next number
+        }
+        result.push(currentVal); // Push the operator
+      } else {
+        // Accumulate digits and decimal points into a complete number
+        currentNumber += currentVal;
+      }
+    }
+
+    // Push the final number, if any
+    if (currentNumber !== "") {
+      result.push(currentNumber);
+    }
+
+    return result;
+  }
+
+  private evaluatePercentages(input: string[]): string[] {
+    const result: string[] = [];
+
+    while (input.length > 0) {
+      const currentVal = input.shift() as string;
+
+      if (currentVal === "%") {
+        const previousVal = result.pop(); // Pop the last number added to the result
+        if (previousVal !== undefined) {
+          const percentValue = (Number(previousVal) / 100).toString();
+          result.push(percentValue);
+        }
+      } else {
         result.push(currentVal);
       }
     }

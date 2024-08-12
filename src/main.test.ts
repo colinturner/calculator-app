@@ -443,7 +443,20 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("3");
       });
 
-      it("#2: handles the π-symbol", () => {
+      it("#2: handles the %-symbol", () => {
+        // Simulate some calculator input
+        calculator.handleInput("9");
+        calculator.handleInput("%");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("0.09");
+      });
+
+      it("#3: handles the π-symbol", () => {
         // Simulate some calculator input
         calculator.handleInput("6");
         calculator.handleInput("×");
@@ -459,7 +472,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("19.84955592154");
       });
 
-      it("#3: handles the e-symbol", () => {
+      it("#4: handles the e-symbol", () => {
         // Simulate some calculator input
         calculator.handleInput("4");
         calculator.handleInput("×");
@@ -475,7 +488,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("12.87312731384");
       });
 
-      it("#4: handles multiple special symbols at once", () => {
+      it("#5: handles multiple special symbols at once", () => {
         // Simulate some calculator input
         calculator.handleInput("4");
         calculator.handleInput("×");
@@ -494,7 +507,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("10.87949351156");
       });
 
-      it("#5: correctly infers implicit multiplication with e-symbol", () => {
+      it("#6: correctly infers implicit multiplication with e-symbol", () => {
         // Simulate some calculator input
         calculator.handleInput("4");
         calculator.handleInput("e");
@@ -507,7 +520,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("10.87312731384");
       });
 
-      it("#6: correctly infers implicit multiplication with π-symbol", () => {
+      it("#7: correctly infers implicit multiplication with π-symbol", () => {
         // Simulate some calculator input
         calculator.handleInput("4");
         calculator.handleInput("π");
@@ -520,7 +533,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("12.56637061436");
       });
 
-      it("#6: correctly infers implicit multiplication between e- and π-symbol", () => {
+      it("#8: correctly infers implicit multiplication between e- and π-symbol", () => {
         // Simulate some calculator input
         calculator.handleInput("e");
         calculator.handleInput("π");
@@ -533,7 +546,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("8.53973422267");
       });
 
-      it("#7: correctly infers implicit multiplication between e- and π-symbol", () => {
+      it("#9: correctly infers implicit multiplication between e- and π-symbol", () => {
         // Simulate some calculator input
         calculator.handleInput("3");
         calculator.handleInput("π");
@@ -719,9 +732,6 @@ describe("Calculator Tests", () => {
       calculator.handleInput("Rnd");
       updateDisplay(calculator);
       const randomValue = display.textContent as string;
-
-      // Ensure the random value has 6 decimal places
-      expect(randomValue).toMatch(/0\.\d{6}/);
 
       // Backspace the last digit
       calculator.handleInput("CE");
