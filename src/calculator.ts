@@ -89,20 +89,29 @@ class Calculator {
 
     // Pass 1: Eliminate parentheses through recursion
     const pass1 = this.handleParentheses([...totalInput]);
+    console.log("pass1", pass1);
 
     // Pass 2: Substitute special symbols for numbers and operators
     const pass2 = this.substituteSpecialSymbols(pass1);
+    console.log("pass2", pass2);
 
     // Pass 3: Normalize input into a structured array that follows the pattern number-operator-number
     const pass3 = this.aggregateNumbersAndOperators(pass2);
+    console.log("pass3", pass3);
 
-    // Pass 4: Handle multiplication and division
-    const pass4 = this.evaluateMultiplicationAndDivision(pass3);
+    // Pass 4: Handle square roots
+    const pass4 = this.evaluateSquareRoots(pass3);
+    console.log("pass4", pass4);
 
-    // Pass 5: Handle addition and subtraction
-    const pass5 = this.evaluateAdditionAndSubtraction(pass4);
+    // Pass 5: Handle multiplication and division
+    const pass5 = this.evaluateMultiplicationAndDivision(pass4);
+    console.log("pass5", pass5);
 
-    return pass5;
+    // Pass 6: Handle addition and subtraction
+    const pass6 = this.evaluateAdditionAndSubtraction(pass5);
+    console.log("pass6", pass6);
+
+    return pass6;
   }
 
   private handleParentheses(totalInput: string[]): string[] {
@@ -147,7 +156,7 @@ class Calculator {
     while (totalInput.length > 0) {
       const currentVal = totalInput.shift() as string;
 
-      if (["+", "−", "×", "÷"].includes(currentVal)) {
+      if (["+", "−", "×", "÷", "√"].includes(currentVal)) {
         if (currentNumber !== "") {
           result.push(currentNumber); // Push the complete number
           currentNumber = ""; // Reset for the next number
@@ -169,7 +178,8 @@ class Calculator {
 
   private substituteSpecialSymbols(input: string[]): string[] {
     /**
-     * This method takes an input such as:
+     * This method eliminates the symbols 'e', 'π', and '%'.
+     * It takes an input such as:
      * [
       '4', '×', 'e',
       '+', '2', '%',
@@ -219,6 +229,33 @@ class Calculator {
       } else {
         // Just push the current value if it's not one of the special symbols
         result.push(currentVal);
+      }
+    }
+
+    return result;
+  }
+
+  private evaluateSquareRoots(input: string[]): string[] {
+    const result: string[] = [];
+    const operators = ["+", "−", "×", "÷"];
+
+    while (input.length > 0) {
+      const currentVal = input.shift() as string;
+      const previousVal = result[result.length - 1];
+
+      if (currentVal === "√") {
+        // Insert multiplication if the previous value is not an operator or undefined (e.g., for "2√16")
+        if (previousVal && !operators.includes(previousVal)) {
+          result.push("×");
+        }
+
+        // Get the next value (the operand for the square root)
+        const nextVal = input.shift() as string;
+        const operand = Number(nextVal);
+        const sqrtResult = Math.sqrt(operand);
+        result.push(String(sqrtResult));
+      } else {
+        result.push(currentVal); // Push any other values as they are
       }
     }
 

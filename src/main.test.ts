@@ -548,6 +548,66 @@ describe("Calculator Tests", () => {
       });
     });
 
+    describe("Square root", () => {
+      it("#1: handles square root of a number", () => {
+        calculator.handleInput("√");
+        calculator.handleInput("9");
+        calculator.handleInput("=");
+        updateDisplay(calculator);
+        expect(display.textContent).toBe("3");
+      });
+
+      it("#2: handles square root with implicit multiplication", () => {
+        calculator.handleInput("2");
+        calculator.handleInput("√");
+        calculator.handleInput("16");
+        calculator.handleInput("=");
+        updateDisplay(calculator);
+        expect(display.textContent).toBe("8");
+      });
+
+      it("#2: handles square root with implicit multiplication (and decimals)", () => {
+        calculator.handleInput("2");
+        calculator.handleInput(".");
+        calculator.handleInput("3");
+        calculator.handleInput("√");
+        calculator.handleInput("16");
+        calculator.handleInput(".");
+        calculator.handleInput("1");
+        calculator.handleInput("=");
+        updateDisplay(calculator);
+        expect(display.textContent).toBe("9.22870521796");
+      });
+
+      it("#3: handles square root next to an operator", () => {
+        calculator.handleInput("4");
+        calculator.handleInput("+");
+        calculator.handleInput("√");
+        calculator.handleInput("25");
+        calculator.handleInput("=");
+        updateDisplay(calculator);
+        expect(display.textContent).toBe("9");
+      });
+
+      it("#3: handles square root with parentheses", () => {
+        calculator.handleInput("4");
+        calculator.handleInput("+");
+        calculator.handleInput("√");
+        calculator.handleInput("(");
+        calculator.handleInput("20");
+        calculator.handleInput(".");
+        calculator.handleInput("7");
+        calculator.handleInput("+");
+        calculator.handleInput("4");
+        calculator.handleInput(".");
+        calculator.handleInput("3");
+        calculator.handleInput(")");
+        calculator.handleInput("=");
+        updateDisplay(calculator);
+        expect(display.textContent).toBe("9");
+      });
+    });
+
     describe("Miscellaneous", () => {
       it("#1: handle a no−operator input", () => {
         // Simulate some calculator input
