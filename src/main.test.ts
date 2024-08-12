@@ -654,7 +654,7 @@ describe("Calculator Tests", () => {
       calculator.handleInput("+");
       calculator.handleInput("2");
       calculator.handleInput("=");
-      calculator.handleInput("AC");
+      calculator.handleInput("CE");
 
       // Update the display based on the calculator's state
       updateDisplay(calculator);
@@ -908,6 +908,27 @@ describe("Calculator Tests", () => {
 
       // Check that the display is correctly updated
       expect(display.textContent).toBe("3 % ");
+    });
+
+    it("#7: ensure an arithmetic or unary operator is used after '='", () => {
+      // Simulate some calculator input
+      calculator.handleInput("3");
+      calculator.handleInput("+");
+      calculator.handleInput("9");
+      calculator.handleInput("=");
+      calculator.handleInput("1");
+
+      // Update the display based on the calculator's state
+      updateDisplay(calculator);
+
+      // Check that the display is correctly updated
+      expect(display.textContent).toBe("12");
+
+      calculator.handleInput("+");
+      calculator.handleInput("4");
+
+      updateDisplay(calculator);
+      calculator.handleInput("16");
     });
   });
 });

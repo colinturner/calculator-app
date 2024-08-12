@@ -1,6 +1,7 @@
 class Calculator {
   private totalInput: string[] = [];
   private lastResult: string = "0"; // Store last result, so that the user can use the Ans button
+  private lastInputWasEqualsSign: boolean = false;
 
   // Readonly getter for totalInput
   public getTotalInput(): ReadonlyArray<string> {
@@ -28,10 +29,18 @@ class Calculator {
       return true;
     }
 
+    // Only allow 'Ans' after operators or opening parenthesis
     if (input === "Ans" && ![...operators, "("].includes(previousInput)) {
       return true;
     }
 
+    // Only allow certain inputs after a result is obtained (i.e. no digits or dots)
+    if (
+      this.lastInputWasEqualsSign &&
+      ![...operators, "%", "e", "π", "CE"].includes(input)
+    ) {
+      return true;
+    }
     return false;
   }
 
@@ -48,10 +57,13 @@ class Calculator {
       if (result === "NaN") {
         return;
       }
+      this.lastInputWasEqualsSign = true;
       this.lastResult = result; // Store, so that user can use Ans button later
       this.totalInput = [result];
       return;
     }
+
+    this.lastInputWasEqualsSign = false;
 
     if (input === "AC") {
       this.totalInput = [];
