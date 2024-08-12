@@ -783,6 +783,23 @@ describe("Calculator Tests", () => {
       updateDisplay(calculator);
       expect(display.textContent).toBe("10");
     });
+
+    it("#2: handles Ans button (with parentheses)", () => {
+      calculator.handleInput("5");
+      calculator.handleInput("+");
+      calculator.handleInput("3");
+      calculator.handleInput("=");
+      updateDisplay(calculator);
+      expect(display.textContent).toBe("8");
+
+      calculator.handleInput("+");
+      calculator.handleInput("(");
+      calculator.handleInput("Ans");
+      calculator.handleInput(")");
+      calculator.handleInput("=");
+      updateDisplay(calculator);
+      expect(display.textContent).toBe("16");
+    });
   });
 
   describe("User input validation", () => {

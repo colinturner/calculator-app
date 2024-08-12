@@ -28,7 +28,7 @@ class Calculator {
       return true;
     }
 
-    if (input === "Ans" && !operators.includes(previousInput)) {
+    if (input === "Ans" && ![...operators, "("].includes(previousInput)) {
       return true;
     }
 
