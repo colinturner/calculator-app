@@ -43,12 +43,17 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: #f1f1f1;
+    background-color: #dadce0; /* Medium grey */
     transition: background-color 0.2s;
 }
 
-button:hover {
-    background-color: #ddd;
+.digit,
+#dot {
+    background-color: #f1f1f1; /* Light grey */
+}
+
+button:hover, #dot:hover {
+    background-color: #c3d1c0; /* Pastel green */
 }
 
 #equals {
