@@ -405,7 +405,7 @@ describe("Calculator Tests", () => {
         expect(display.textContent).toBe("5.27101449275");
       });
 
-      it("#1: handles parentheses (expression not beginning with parentheses)", () => {
+      it("#3: handles parentheses (expression not beginning with parentheses)", () => {
         // Simulate some calculator input
         calculator.handleInput("5");
         calculator.handleInput("+");
@@ -423,6 +423,50 @@ describe("Calculator Tests", () => {
 
         // Check that the display is correctly updated
         expect(display.textContent).toBe("25");
+      });
+
+      describe("Ghosted parentheses", () => {
+        it("should show ghosted parentheses for each unmatched opening parenthesis", () => {
+          calculator.handleInput("(");
+          calculator.handleInput("7");
+          calculator.handleInput("+");
+          calculator.handleInput("(");
+          calculator.handleInput("8");
+
+          updateDisplay(calculator);
+
+          // Expect the display to have two ghosted closing parentheses
+          expect(display.innerHTML).toBe(
+            '(7 +  (8<span class="ghost-parenthesis">)</span><span class="ghost-parenthesis">)</span>'
+          );
+
+          calculator.handleInput(")");
+          updateDisplay(calculator);
+
+          // Expect the display to have one ghosted closing parenthesis
+          expect(display.innerHTML).toBe(
+            '(7 +  (8) <span class="ghost-parenthesis">)</span>'
+          );
+
+          calculator.handleInput(")");
+          updateDisplay(calculator);
+          expect(display.innerHTML).toBe("(7 +  (8) ) ");
+        });
+
+        it("should not show any ghosted parentheses if all are closed", () => {
+          calculator.handleInput("(");
+          calculator.handleInput("7");
+          calculator.handleInput("+");
+          calculator.handleInput("(");
+          calculator.handleInput("8");
+          calculator.handleInput(")");
+          calculator.handleInput(")");
+
+          updateDisplay(calculator);
+
+          // Expect the display to contain no ghosted closing parentheses
+          expect(display.innerHTML).toBe("(7 +  (8) ) ");
+        });
       });
     });
 
@@ -885,7 +929,6 @@ describe("Calculator Tests", () => {
 
     it("#6: prevent computation/display of incoherent result", () => {
       // Simulate some calculator input
-      calculator.handleInput("(");
       calculator.handleInput("3");
       calculator.handleInput("×");
       calculator.handleInput("=");
@@ -894,7 +937,7 @@ describe("Calculator Tests", () => {
       updateDisplay(calculator);
 
       // Check that the display is correctly updated
-      expect(display.textContent).toBe("(3 × ");
+      expect(display.textContent).toBe("3 × ");
     });
 
     it("#7: ensure operator is used after a %-symbol", () => {

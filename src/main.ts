@@ -14,7 +14,7 @@ buttons.forEach((button) => {
 
 export const updateDisplay = (calc: Calculator) => {
   const display = document.querySelector("#display") as HTMLElement;
-  display.textContent = calc.getDisplayValue();
+  display.innerHTML = calc.getDisplayValue();
 };
 
 export const updateClearButton = (calc: Calculator) => {

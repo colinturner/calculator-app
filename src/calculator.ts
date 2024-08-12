@@ -391,15 +391,28 @@ class Calculator {
     }
 
     let value = "";
-    this.totalInput.forEach(
-      (val, index) =>
-        (value = value.concat(
-          `${this.inputRequiresSpaceBefore(
-            val,
-            index
-          )}${val}${this.inputRequiresSpaceAfter(val)}`
-        ))
-    );
+    let openParenthesesCount = 0;
+
+    this.totalInput.forEach((val, index) => {
+      if (val === "(") {
+        openParenthesesCount++;
+      } else if (val === ")") {
+        openParenthesesCount = Math.max(0, openParenthesesCount - 1);
+      }
+
+      value = value.concat(
+        `${this.inputRequiresSpaceBefore(
+          val,
+          index
+        )}${val}${this.inputRequiresSpaceAfter(val)}`
+      );
+    });
+
+    // Add ghosted closing parentheses for each unmatched opening parenthesis
+    for (let i = 0; i < openParenthesesCount; i++) {
+      value += `<span class="ghost-parenthesis">)</span>`;
+    }
+
     return value;
   }
 }
