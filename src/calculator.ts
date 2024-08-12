@@ -52,6 +52,20 @@ class Calculator {
       return;
     }
 
+    if (input === "Rnd") {
+      const DECIMAL_PLACES = 6;
+      const randomValue = String(
+        Math.floor(Math.random() * Math.pow(10, DECIMAL_PLACES)) /
+          Math.pow(10, DECIMAL_PLACES)
+      );
+      // Push each character (digit or dot) individually to allow the CE (backspace)
+      // button to work as expected
+      for (const character of randomValue) {
+        this.totalInput.push(character);
+      }
+      return;
+    }
+
     this.totalInput.push(input);
   }
 

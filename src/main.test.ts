@@ -701,6 +701,46 @@ describe("Calculator Tests", () => {
     });
   });
 
+  describe("Rnd (Random) button", () => {
+    it("#1: generates a random number and adds it to the screen", () => {
+      // Simulate some calculator input
+      calculator.handleInput("Rnd");
+
+      // Update the display based on the calculator's state
+      updateDisplay(calculator);
+
+      // Check that the display is correctly updated
+      expect(Number(display.textContent)).toBeGreaterThanOrEqual(0);
+      expect(Number(display.textContent)).toBeLessThan(1);
+    });
+
+    it("#2: allows a randomly-generated number to be backspaced one digit/dot at a time", () => {
+      // Simulate some calculator input
+      calculator.handleInput("Rnd");
+      updateDisplay(calculator);
+      const randomValue = display.textContent as string;
+
+      // Ensure the random value has 6 decimal places
+      expect(randomValue).toMatch(/0\.\d{6}/);
+
+      // Backspace the last digit
+      calculator.handleInput("CE");
+      updateDisplay(calculator);
+      const afterFirstCE = display.textContent as string;
+
+      // Verify that the value is now missing the last character of randomValue
+      expect(afterFirstCE).toBe(randomValue.slice(0, -1));
+
+      // Backspace again
+      calculator.handleInput("CE");
+      updateDisplay(calculator);
+      const afterSecondCE = display.textContent as string;
+
+      // Verify that the value is now missing the last two characters of randomValue
+      expect(afterSecondCE).toBe(randomValue.slice(0, -2));
+    });
+  });
+
   describe("User input validation", () => {
     it("#1: prevent two operators being input in immediate succession", () => {
       // Simulate some calculator input
