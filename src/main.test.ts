@@ -519,6 +519,33 @@ describe("Calculator Tests", () => {
         // Check that the display is correctly updated
         expect(display.textContent).toBe("12.56637061436");
       });
+
+      it("#6: correctly infers implicit multiplication between e- and π-symbol", () => {
+        // Simulate some calculator input
+        calculator.handleInput("e");
+        calculator.handleInput("π");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("8.53973422267");
+      });
+
+      it("#7: correctly infers implicit multiplication between e- and π-symbol", () => {
+        // Simulate some calculator input
+        calculator.handleInput("3");
+        calculator.handleInput("π");
+        calculator.handleInput("e");
+        calculator.handleInput("=");
+
+        // Update the display based on the calculator's state
+        updateDisplay(calculator);
+
+        // Check that the display is correctly updated
+        expect(display.textContent).toBe("25.61920266802");
+      });
     });
 
     describe("Miscellaneous", () => {
@@ -696,6 +723,19 @@ describe("Calculator Tests", () => {
 
       // Check that the display is correctly updated
       expect(display.textContent).toBe("(3 × ");
+    });
+
+    it("#7: ensure operator is used after a %-symbol", () => {
+      // Simulate some calculator input
+      calculator.handleInput("3");
+      calculator.handleInput("%");
+      calculator.handleInput("9");
+
+      // Update the display based on the calculator's state
+      updateDisplay(calculator);
+
+      // Check that the display is correctly updated
+      expect(display.textContent).toBe("3 % ");
     });
   });
 });

@@ -10,11 +10,18 @@ class Calculator {
     const previousInput = this.totalInput[this.totalInput.length - 1];
     const operators = ["+", "−", "×", "÷"];
 
+    // Can't have two operators in a row as inputs. E.g. "+" followed by another "+".
     if (operators.includes(input) && operators.includes(previousInput)) {
       return true;
     }
 
+    // Can't have an operator such as "+" follow a "."
     if (operators.includes(input) && previousInput === ".") {
+      return true;
+    }
+
+    // Can't have a %-symbol without an operator following it
+    if (previousInput === "%" && !operators.includes(input)) {
       return true;
     }
 
@@ -181,6 +188,7 @@ class Calculator {
       const currentVal = input[i];
       const previousVal = result[result.length - 1];
       const operators = ["+", "−", "×", "÷"];
+      const specialSymbols = ["e", "π"];
 
       if (currentVal === "%") {
         // Substitute "%" with "÷" and "100"
@@ -188,14 +196,22 @@ class Calculator {
         result.push("100");
       } else if (currentVal === "π") {
         // Account for implicit multiplication, e.g. user entering "4π" instead of "4 × π"
-        if (!operators.includes(previousVal)) {
+        if (
+          previousVal &&
+          !operators.includes(previousVal) &&
+          !specialSymbols.includes(previousVal)
+        ) {
           result.push("×");
         }
         // Substitute "π" with the value of Math.PI
         result.push(String(Math.PI));
       } else if (currentVal === "e") {
         // Account for implicit multiplication, e.g. user entering "4e" instead of "4 × e"
-        if (!operators.includes(previousVal)) {
+        if (
+          previousVal &&
+          !operators.includes(previousVal) &&
+          !specialSymbols.includes(previousVal)
+        ) {
           result.push("×");
         }
         // Substitute "e" with the value of Math.E
