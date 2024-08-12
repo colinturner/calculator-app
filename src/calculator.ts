@@ -110,53 +110,40 @@ class Calculator {
   private calculateResult(totalInput: string[]): string {
     /*
      * We handle the calculation in a series of passes over totalInput.
-     * Focusing on just the last 3 passes, let's imagine that
-     * we begin with this input heading into the first of the three passes:
-     * ["4", "+", "3", "÷", "1", ".", "5", "−", "7"]
-     *
-     * Pass 1: Aggregate numbers and operators
-     * --> ["4", "+", "3", "÷", "1.5", "−", "7"]
-     *
-     * Pass 2: Evaluate multiplication and division
-     * --> ["4", "+", "2", "−", "7"]
-     *
-     * Pass 3: Evaluate addition and subtraction
-     * --> "-1"
-     *
-     * Celebrate!
+     * Each pass simplifies the input further than the last pass,
+     * until we're left with a single value.
      */
 
     // Pass 1: Eliminate parentheses through recursion
     const pass1 = this.handleParentheses([...totalInput]);
-    console.log("pass1", pass1);
 
     // Pass 2: Substitute special symbols for numbers and operators
     const pass2 = this.substituteSpecialSymbols(pass1);
-    console.log("pass2", pass2);
 
     // Pass 3: Normalize input into a structured array that follows the pattern number-operator-number
     const pass3 = this.aggregateNumbersAndOperators(pass2);
-    console.log("pass3", pass3);
 
     // Pass 4: Handle percentage symbols
     const pass4 = this.evaluatePercentages(pass3);
 
     // Pass 5: Handle square roots
     const pass5 = this.evaluateSquareRoots(pass4);
-    console.log("pass5", pass5);
 
     // Pass 6: Handle multiplication and division
     const pass6 = this.evaluateMultiplicationAndDivision(pass5);
-    console.log("pass6", pass6);
 
     // Pass 7: Handle addition and subtraction
     const pass7 = this.evaluateAdditionAndSubtraction(pass6);
-    console.log("pass7", pass7);
 
     return pass7;
   }
 
   private handleParentheses(totalInput: string[]): string[] {
+    /**
+     * This method eliminates parentheses in the totalInput array
+     * by recursively calling this.calculateResult() until all
+     * nested parentheses are into a single value.
+     */
     const result: string[] = [];
 
     while (totalInput.length > 0) {
@@ -245,6 +232,9 @@ class Calculator {
   }
 
   private aggregateNumbersAndOperators(totalInput: string[]): string[] {
+    /**
+     * This method accumulates individual digits and dots into complete numbers.
+     */
     const result: string[] = [];
     let currentNumber = "";
 
@@ -272,6 +262,9 @@ class Calculator {
   }
 
   private evaluatePercentages(input: string[]): string[] {
+    /**
+     * This method evaluates any percentage values in the input array.
+     */
     const result: string[] = [];
 
     while (input.length > 0) {
@@ -292,6 +285,9 @@ class Calculator {
   }
 
   private evaluateSquareRoots(input: string[]): string[] {
+    /**
+     * This method evaluates any square roots in the input array.
+     */
     const result: string[] = [];
     const operators = ["+", "−", "×", "÷"];
 
@@ -321,6 +317,10 @@ class Calculator {
   private evaluateMultiplicationAndDivision(
     aggregatedInput: string[]
   ): string[] {
+    /**
+     * This method handles multiplication and division operations in the input array.
+     * It's important for this step to happen before addition and subtraction.
+     */
     const result: string[] = [];
     let currentNumber = Number(aggregatedInput.shift() as string);
 
@@ -347,6 +347,9 @@ class Calculator {
 
   private evaluateAdditionAndSubtraction(input: string[]): string {
     let result = Number(input.shift() as string);
+    /**
+     * This method handles addition and subtraction operations in the input array.
+     */
 
     while (input.length > 0) {
       const operator = input.shift() as string;
@@ -366,6 +369,9 @@ class Calculator {
     operand2: number,
     operator: string
   ): number {
+    /**
+     * This is a generic "operation" method that combines two operands with an operator.
+     */
     switch (operator) {
       case "+":
         return operand1 + operand2;
