@@ -1,5 +1,6 @@
 class Calculator {
   private totalInput: string[] = [];
+  private lastResult: string = "0"; // Store last result, so that the user can use the Ans button
 
   // Readonly getter for totalInput
   public getTotalInput(): ReadonlyArray<string> {
@@ -27,6 +28,10 @@ class Calculator {
       return true;
     }
 
+    if (input === "Ans" && !operators.includes(previousInput)) {
+      return true;
+    }
+
     return false;
   }
 
@@ -43,6 +48,7 @@ class Calculator {
       if (result === "NaN") {
         return;
       }
+      this.lastResult = result; // Store, so that user can use Ans button later
       this.totalInput = [result];
       return;
     }
@@ -70,6 +76,11 @@ class Calculator {
           this.totalInput.push(character);
         }
       }
+      return;
+    }
+
+    if (input === "Ans") {
+      this.totalInput.push(this.lastResult);
       return;
     }
 

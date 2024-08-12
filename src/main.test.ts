@@ -767,6 +767,24 @@ describe("Calculator Tests", () => {
     });
   });
 
+  describe("Ans (Answer) button", () => {
+    it("#1: handles Ans button, using previously-calculated value", () => {
+      calculator.handleInput("5");
+      calculator.handleInput("+");
+      calculator.handleInput("3");
+      calculator.handleInput("=");
+      updateDisplay(calculator);
+      expect(display.textContent).toBe("8");
+
+      calculator.handleInput("Ans");
+      calculator.handleInput("+");
+      calculator.handleInput("2");
+      calculator.handleInput("=");
+      updateDisplay(calculator);
+      expect(display.textContent).toBe("10");
+    });
+  });
+
   describe("User input validation", () => {
     it("#1: prevent two operators being input in immediate succession", () => {
       // Simulate some calculator input
